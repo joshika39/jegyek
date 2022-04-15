@@ -1,0 +1,17 @@
+a.seat-group{
+    background-color: #2196F3;
+    display: flex;
+}
+
+a.ultra-group{
+    padding: 2.5rem 12rem;
+    margin: 0 2.5rem;
+}
+
+a.big-group{
+    padding: 2.5rem 5rem;
+}
+
+a.small-group{
+    padding: 2.5rem 3rem;
+}
