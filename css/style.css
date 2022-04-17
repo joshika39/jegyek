@@ -20,7 +20,9 @@ body{
     flex-direction: column;
 }
 .row{
-    display: block;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.7rem;
 }
 
 #container{
@@ -78,4 +80,11 @@ input:focus .slider {
 input:disabled + .slider {
     background-color: #ff071c;
     box-shadow: 0 0 1px #ff071c;
+}
+
+@media only screen and (max-width: 1500px) {
+    .switch {
+        width: 25px;
+        height: 25px;
+    }
 }

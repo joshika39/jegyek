@@ -1,5 +1,4 @@
 <?php
-
 use JetBrains\PhpStorm\Pure;
 
 function createSeatBlock($row, $col): array
@@ -50,22 +49,32 @@ function createSeatBlock($row, $col): array
 
 function getAllSeats($JSONFilePath): array
 {
-    $json_data = file_get_contents($JSONFilePath);
+    require_once "constants.php";
+    $json_data = file_get_contents($targetDir.$JSONFilePath);
     return json_decode($json_data, true);
 }
 
-function writeNewJSON($floor, $block, $sourceFile, $targetFile, $editedSeats, int $editor)
+function writeNewJSON($floor, $block, $sourceFile, $targetFile, $editedSeats, int $editor): string
 {
-    $JSONArray = getAllSeats($sourceFile);
+    require_once "constants.php";
+    if (!file_exists($sourceFile)) {
+        return "Source file ($sourceFile) not exists!";
+    }
+    $json_data = file_get_contents($sourceFile);
+    $JSONArray = json_decode($json_data, true);
 
     for ($i = 0; $i < count($editedSeats); $i++) {
         $JSONArray[$floor][$block]['seats'][$editedSeats[$i]]["user"] = $editor;
     }
 
     $JSON = json_encode($JSONArray);
-    $seatsFile = fopen($targetFile, "w") or die("Unable to open file!");
+    $seatsFile = fopen($targetFile, "w");
+    if (!$seatsFile) {
+        return "Error opening $targetFile";
+    }
     fwrite($seatsFile, $JSON);
     fclose($seatsFile);
+    return "Writing to $targetFile success";
 }
 
 

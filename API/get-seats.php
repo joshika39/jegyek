@@ -1,7 +1,6 @@
 <?php
 
 if(isset($_POST)){
-    require_once '../functions.php';
 
     $floor = $_POST['floor'];
     $block = $_POST['block'];

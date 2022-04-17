@@ -1,9 +1,9 @@
 <?php
 
-require_once 'functions.php';
+require_once '../configure/functions.php';
 
 session_start();
-if(!isset($_SESSION['userId'])){
+if (!isset($_SESSION['userId'])) {
     header('Location: login.php?type=login');
 }
 
@@ -28,8 +28,8 @@ $data = $selectedBlock["data"];
 <head>
     <title>Jegyvalaszto</title>
     <link rel="stylesheet" href="../css/style.css">
-    <script id="jquery" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://unpkg.com/vue@3"></script>
+    <script src="../js/jquery-3.6.0.min.js"></script>
     <script src="../js/script.js"></script>
     <script src="../js/vue.js"></script>
 </head>
@@ -39,28 +39,28 @@ $data = $selectedBlock["data"];
     <div>
         <p><?php echo "$floor es $block, USER: $user" ?></p>
         <a href="logout.php">Kijelentkezes</a>
+        <a href="index.php">Masik block</a>
     </div>
     <div class="floor">
         <div class="seat-group">
             <?php for ($i = 1; $i <= $data["rows"]; $i++) { ?>
-                <?php for ($j = 1; $j <= $data["columns"]; $j++) { ?>
-                    <label class="switch">
-                        <input type="checkbox" <?php
-                        if($seats["$i-$j"]["user"] != null)
-                        {
-                            if($seats["$i-$j"]["user"] == $user)
-                            {
-                                echo "checked";
-                            }else{
-                                echo "disabled";
+                <div class="row">
+                    <?php for ($j = 1; $j <= $data["columns"]; $j++) { ?>
+                        <label class="switch">
+                            <input type="checkbox" <?php
+                            if ($seats["$i-$j"]["user"] != null) {
+                                if ($seats["$i-$j"]["user"] == $user) {
+                                    echo "checked";
+                                } else {
+                                    echo "disabled";
+                                }
                             }
-                        }
-                        ?>  id="<?php echo "$i-$j"; ?>" onchange="onCheckValueChanged(this)">
+                            ?> id="<?php echo "$i-$j"; ?>" onchange="onCheckValueChanged(this)">
 
-                        <span class="slider <?php if($seats["$i-$j"]["user"] == $user) echo "owned" ?>"><?php echo $seats["$i-$j"]["num"] + 1 ?></span>
-                    </label>
-                <?php } ?>
-                <br>
+                            <span class="slider <?php if ($seats["$i-$j"]["user"] == $user) echo "owned" ?>"><?php echo $seats["$i-$j"]["num"] + 1 ?></span>
+                        </label>
+                    <?php } ?>
+                </div>
             <?php } ?>
             <button onclick="sendArray(<?php echo "'$floor', '$block', $user" ?>)">Save</button>
         </div>

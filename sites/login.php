@@ -1,7 +1,12 @@
 <?php
 $messages = null;
 session_start();
-require_once 'connect.php';
+require_once '../configure/connect.php';
+
+if(isset($_SESSION['userId'])){
+    header('Location: index.php');
+}
+
 $type = null;
 if (isset($_GET['type'])) {
     $type = $_GET['type'];
@@ -16,19 +21,24 @@ else {
 }
 
 if (isset($_POST['submit'])) {
+    $type = $_GET['type'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     if ($type == "register") {
+        echo "In";
         $name = $_POST['name'];
         $chk_stmt = "SELECT * FROM users WHERE email = '$email'";
         $chk_result = mysqli_num_rows(mysqli_query($conn, $chk_stmt));
         if ($chk_result == 0) {
-            $insert_stmt = "INSERT INTO users VALUES('', '$email', '$password', '$name')";
-            $insert_query = mysqli_query($conn, $insert_stmt);
+            $insert_stmt = "INSERT INTO users (email, password, name) VALUES('$email', '$password', '$name')";
+            $insert_query = $conn -> query($insert_stmt);
 
             if ($insert_query) {
                 $messages .= "<p class='info'>Success</p>";
+            }
+            else{
+                echo "Error:". $conn -> error;
             }
         } else {
             $messages .= "<p class='error'>Email foglalt</p>";
